@@ -9,8 +9,8 @@ today = date.today()
 # load config file
 config = dotenv_values("./.env")
 # get the client id and the token
-token = config['REDDIT_SECRET']
-Id    = config['REDDIT_ID']
+token: str = str(config['REDDIT_SECRET'])
+Id: str    = str(config['REDDIT_ID'])
 
 # setup user arguments
 # (reason why i have sys imported)
