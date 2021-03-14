@@ -11,3 +11,5 @@ python takeit.py [sub] [amount of submissions] [folder to download them]
 - nsfw filtering
 - fast. (1.7s on modern wifi, 10 submissions from r/unixporn)
 - only ONE dependency!
+
+# demo
