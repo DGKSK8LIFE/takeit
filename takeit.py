@@ -39,7 +39,7 @@ print(f"Created REDDIT instance at {date.today().strftime('%m/%d, %Y')}")
 def download():
     i = 1
     for submission in takeit.subreddit(arg1).hot(limit=int(arg2)):
-        if  submission.over_18:
+        if not submission.over_18:
             # Check if it has the following:
             # imgur, v.redd.it, and i.redd.it, and if does,
             # then we download it to arg3, which is the folder
@@ -59,7 +59,7 @@ def download():
 # nsfwDownload downloads nsfw. what did you expect?
 def nsfwDownload():
     j = 1 # :)
-    for submission in takeit.subreddit(arg1).hhot(limit=int(arg2)):
+    for submission in takeit.subreddit(arg1).hot(limit=int(arg2)):
         # basically the same thing as above but less code
         if "i.imgur" in submission.url:
             request.urlretrieve(submission.url, f"{arg3}/{submission.url[20:]}")
@@ -67,7 +67,7 @@ def nsfwDownload():
         elif "i.redd" in submission.url and "v.redd" in submission.url:
             request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
             j += 1
-        print(f"Downloaded {i} of {arg2}")
+        print(f"Downloaded {j} of {arg2}")
 
 # Main clause
 if __name__ == "__main__":
