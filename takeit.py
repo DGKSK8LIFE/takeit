@@ -44,8 +44,14 @@ def download():
         # then we download it to arg3, which is the folder
         if "i.imgur" in submission.url: # 20 bytes in is where the file is
             request.urlretrieve(submission.url, f"{arg3}/{submission.url[20:]}")
+            i += 1
         elif "i.redd" in submission.url: # 18 bytes
-            request.urlretrieve(submission.url, f"{arg3}/{submissionurl[18:]}")
+            request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
+            i += 1
+        elif "v.redd" in submission.url: # 18 bytes (still, reddit is not wacky)
+            request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
+            i += 1
+        print(f"Downloaded {i} of {arg2}")
 # Main clause
 if __name__ == "__main__":
     download()
