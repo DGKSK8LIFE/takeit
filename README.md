@@ -13,3 +13,4 @@ python takeit.py [sub] [amount of submissions] [folder to download them]
 - only ONE dependency!
 
 # demo
+![demo](./demo.gif)
