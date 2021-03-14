@@ -1,6 +1,4 @@
-#
 # Imports
-#
 
 import praw
 from dotenv import dotenv_values
@@ -8,9 +6,7 @@ from datetime import date
 from urllib import request # For downloading.
 import sys
 
-#
 # Variables
-#
 
 # load config file
 config = dotenv_values("./.env")
@@ -35,61 +31,21 @@ takeit = praw.Reddit(
 
 print(f"Created REDDIT instance at {date.today().strftime('%m/%d, %Y')}")
 
-#
 # Functions
-#
 
 # download is a function that does not take any arguments, and downloads
 # images from the user's arguments supplied when executied.
+# this is usually for NON nsfw things...if you want NSFW check nsfwDownload.
 def download():
-    isNsfwEnabled = False
     i = 0
-    for submission in takeit.subreddit(str(arg1)).hot(limit=int(arg2)):
-        if submission.over_18:
-            if isNsfwEnabled == True:
-                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")      
-                i += 1
-            else:
-                nsfwCheck = input("Do you want to enable nsfw for this session? (y/N) ")
-                if nsfwCheck == 'y':
-                    isNsfwEnabled = True
-                else:
-                    # Do NOT download the image.
-                    print(f"Not downloading image {i} of {arg2}")
-                    i += 1 # so it doesn't say 0 of 100 after you say N 100 times.
-                    # If I is over 1, nsfwEnabled is False AND the submission is over_18, just
-                    # quit out of the for loop
-                    if i > 1 and nsfwEnabled == False and submission.over_18:
-                        print(f"Temporary solution. Quitting at submission {i} of {arg2 + 1}")
-                        # bye
-                        break
-        else:
-            # Just normally download the image...
-            # but we check for if it's a gif or
-            # an image
-            if "i.redd.it" in submission.url:
-                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
-                # Check if it has a gif, and print something:
-                if "gif" in submission.url:
-                    print(f"Downloaded gif. {i} of {arg2}")
-                    i += 1
-                if "mp4" in submission.url:
-                    print(f"Downloaded mp4. {i} of {arg2}")
-                else:
-                    print(f"Downloaded image. {i} of {arg2}")
-                    # Check if it's NOT a gif (e.g. jpg or png or webp) and print something.
-                    i += 1
-            else:
-                # Not download it at all, because it may be a gallery or a text post
-                print(f"Not downloading {i}/{arg2}")
-                i += 1
-        if i > arg2 + 1:
-            break
-    # Tell the user that we've finished downloading.
-    print(f"Finished downloading {i} submissions into directory {arg3}")
-    return
-#
-# Main "function"
-#
+    for submission in takeit.subreddit(arg1).hot(limit=int(arg2)):
+        # Check if it has the following:
+        # imgur, v.redd.it, and i.redd.it, and if does,
+        # then we download it to arg3, which is the folder
+        if "i.imgur" in submission.url: # 20 bytes in is where the file is
+            request.urlretrieve(submission.url, f"{arg3}/{submission.url[20:]}")
+        elif "i.redd" in submission.url: # 18 bytes
+            request.urlretrieve(submission.url, f"{arg3}/{submissionurl[18:]}")
+# Main clause
 if __name__ == "__main__":
     download()
