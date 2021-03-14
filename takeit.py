@@ -39,11 +39,6 @@ print(f"Created REDDIT instance at {date.today().strftime('%m/%d, %Y')}")
 # Functions
 #
 
-# Some variables that are used in the download() function
-i = 0 # essentially iterator (used to track how many files are downloaded)
-isNsfwEnabled = False # whether NSFW imagery is allowed to be downloaded or not 
-# for the current session.
-
 # download is a function that does not take any arguments, and downloads
 # images from the user's arguments supplied when executied.
 def download():
