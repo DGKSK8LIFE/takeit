@@ -44,7 +44,7 @@ print(f"Created REDDIT instance at {date.today().strftime('%m/%d, %Y')}")
 def download():
     isNsfwEnabled = False
     i = 0
-    for submission in takeit.subreddit(str(arg1)).hot(limit=int(arg2 + 1)):
+    for submission in takeit.subreddit(str(arg1)).hot(limit=int(arg2)):
         if submission.over_18:
             if isNsfwEnabled == True:
                 request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")      
@@ -57,6 +57,12 @@ def download():
                     # Do NOT download the image.
                     print(f"Not downloading image {i} of {arg2}")
                     i += 1 # so it doesn't say 0 of 100 after you say N 100 times.
+                    # If I is over 1, nsfwEnabled is False AND the submission is over_18, just
+                    # quit out of the for loop
+                    if i > 1 and nsfwEnabled == False and submission.over_18:
+                        print(f"Temporary solution. Quitting at submission {i} of {arg2 + 1}")
+                        # bye
+                        break
         else:
             # Just normally download the image...
             # but we check for if it's a gif or
@@ -67,24 +73,21 @@ def download():
                 if "gif" in submission.url:
                     print(f"Downloaded gif. {i} of {arg2}")
                     i += 1
+                if "mp4" in submission.url:
+                    print(f"Downloaded mp4. {i} of {arg2}")
                 else:
                     print(f"Downloaded image. {i} of {arg2}")
                     # Check if it's NOT a gif (e.g. jpg or png or webp) and print something.
                     i += 1
-            elif "v.redd.it" in submission.url:
-                # Also download it. I just have this in a different clause
-                # because i feel that I should be able to print out different
-                # messages for different things (gifs, videos, images)
-                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
-                print(f"Downloaded video {i} of {arg2}")
-                i += 1
             else:
                 # Not download it at all, because it may be a gallery or a text post
                 print(f"Not downloading {i}/{arg2}")
                 i += 1
+        if i > arg2 + 1:
+            break
     # Tell the user that we've finished downloading.
-    print(f"Finished downloading {i - 1} submissions into directory {arg3}")
-
+    print(f"Finished downloading {i} submissions into directory {arg3}")
+    return
 #
 # Main "function"
 #
