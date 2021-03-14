@@ -32,7 +32,7 @@ print(f"Created REDDIT instance at {today.strftime('%m/%d, %Y')}")
 isNsfwEnabled = False # just default, because...
 # Start doing the submission downloading
 for i in range(arg2):
-    for submission in takeit.subreddit(arg1).hot(limit=arg2):
+    for submission in takeit.subreddit(str(arg1)).hot(limit=int(arg2)):
         if submission.over_18:
             if isNsfwEnabled == True:
                 request.urlretrieve(submission.url, arg3)      
