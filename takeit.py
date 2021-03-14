@@ -37,21 +37,38 @@ print(f"Created REDDIT instance at {date.today().strftime('%m/%d, %Y')}")
 # images from the user's arguments supplied when executied.
 # this is usually for NON nsfw things...if you want NSFW check nsfwDownload.
 def download():
-    i = 0
+    i = 1
     for submission in takeit.subreddit(arg1).hot(limit=int(arg2)):
-        # Check if it has the following:
-        # imgur, v.redd.it, and i.redd.it, and if does,
-        # then we download it to arg3, which is the folder
-        if "i.imgur" in submission.url: # 20 bytes in is where the file is
+        if  submission.over_18:
+            # Check if it has the following:
+            # imgur, v.redd.it, and i.redd.it, and if does,
+            # then we download it to arg3, which is the folder
+            if "i.imgur" in submission.url: # 20 bytes in is where the file is
+                request.urlretrieve(submission.url, f"{arg3}/{submission.url[20:]}")
+                i += 1
+            elif "i.redd" in submission.url: # 18 bytes
+                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
+                i += 1
+            elif "v.redd" in submission.url: # 18 bytes (still, reddit is not wacky)
+                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
+                i += 1
+            print(f"Downloaded {i} of {arg2}")
+        else:
+            nsfwDownload()
+
+# nsfwDownload downloads nsfw. what did you expect?
+def nsfwDownload():
+    j = 1 # :)
+    for submission in takeit.subreddit(arg1).hhot(limit=int(arg2)):
+        # basically the same thing as above but less code
+        if "i.imgur" in submission.url:
             request.urlretrieve(submission.url, f"{arg3}/{submission.url[20:]}")
-            i += 1
-        elif "i.redd" in submission.url: # 18 bytes
+            j += 1
+        elif "i.redd" in submission.url and "v.redd" in submission.url:
             request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
-            i += 1
-        elif "v.redd" in submission.url: # 18 bytes (still, reddit is not wacky)
-            request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
-            i += 1
+            j += 1
         print(f"Downloaded {i} of {arg2}")
+
 # Main clause
 if __name__ == "__main__":
     download()
