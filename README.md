@@ -19,7 +19,8 @@ python takeit.py [sub] [amount of submissions] [folder to download them]
 
 in a way, takeit is selhosted. how is it selfhosted? you need to create a app [here](https://www.reddit.com/prefs/apps). here are steps (after you've made an app in reddit):
 1. in the directory that you've cloned `takeit`, add this to a `.env` file:
-```
+```env
+# please don't copy past ethis exactly, and then run it, and then get angry at me that it doesn't work.
 REDDIT_SECRET="[YOUR REDDIT APP SECRET]"
 REDDIT_ID="[YOUR REDDIT APP ID]"
 ```
