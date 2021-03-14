@@ -14,3 +14,21 @@ python takeit.py [sub] [amount of submissions] [folder to download them]
 
 # demo
 ![demo](./demo.gif)
+
+# how to "self host"?
+
+in a way, takeit is selhosted. how is it selfhosted? you need to create a app [here](https://www.reddit.com/prefs/apps). here are steps (after you've made an app in reddit):
+1. in the directory that you've cloned `takeit`, add this to a `.env` file:
+```
+REDDIT_SECRET="[YOUR REDDIT APP SECRET]"
+REDDIT_ID="[YOUR REDDIT APP ID]"
+```
+2. install the dependencies for `takeit` via `pip install -r requirements.txt` or `py -m pip install -r requirements.txt` depending on your operating system.
+
+# running
+
+for example, let's say we want to download 10 submissions from [r/196](https://www.reddit.com/r/196), we would run something like this:
+```
+python takeit.py 196 10 test
+```
+this'll download 10 submissions (images, videos, and gifs) to the `test` directory.
