@@ -1,10 +1,16 @@
+#
+# Imports
+#
+
 import praw
 from dotenv import dotenv_values
 from datetime import date
 from urllib import request # For downloading.
 import sys
 
-today = date.today()
+#
+# Variables
+#
 
 # load config file
 config = dotenv_values("./.env")
@@ -20,29 +26,33 @@ arg2 = int(sys.argv[2]) # 2 will be how many submissions needed.
 arg3 = str(sys.argv[3]) # 3 will be the folder to download the images,
 # gifs or videos to.
 
-# Create the instance
+
 takeit = praw.Reddit(
     client_id=Id,
     client_secret=token,
     user_agent="takeit by /u/abcado"
 )
 
-# Print out the full arguments
-for k in range(len(sys.argv)):
-    print(f"Argument {k}: {sys.argv[k]}")
+print(f"Created REDDIT instance at {date.today().strftime('%m/%d, %Y')}")
 
-print(f"Created REDDIT instance at {today.strftime('%m/%d, %Y')}")
+#
+# Functions
+#
 
-# Use I for iterations, see below
-i = 0
+# Some variables that are used in the download() function
+i = 0 # essentially iterator (used to track how many files are downloaded)
+isNsfwEnabled = False # whether NSFW imagery is allowed to be downloaded or not 
+# for the current session.
 
-isNsfwEnabled = False # just default, because...
-# Start doing the submission downloading
-while True:
+# download is a function that does not take any arguments, and downloads
+# images from the user's arguments supplied when executied.
+def download():
+    isNsfwEnabled = False
+    i = 0
     for submission in takeit.subreddit(str(arg1)).hot(limit=int(arg2 + 1)):
         if submission.over_18:
             if isNsfwEnabled == True:
-                request.urlretrieve(submission.url, arg3)      
+                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")      
                 i += 1
             else:
                 nsfwCheck = input("Do you want to enable nsfw for this session? (y/N) ")
@@ -51,6 +61,7 @@ while True:
                 else:
                     # Do NOT download the image.
                     print(f"Not downloading image {i} of {arg2}")
+                    i += 1 # so it doesn't say 0 of 100 after you say N 100 times.
         else:
             # Just normally download the image...
             # but we check for if it's a gif or
@@ -76,7 +87,11 @@ while True:
                 # Not download it at all, because it may be a gallery or a text post
                 print(f"Not downloading {i}/{arg2}")
                 i += 1
-    if i == arg2 + 1:
-        break
-    else:
-        continue
+    # Tell the user that we've finished downloading.
+    print(f"Finished downloading {i - 1} submissions into directory {arg3}")
+
+#
+# Main "function"
+#
+if __name__ == "__main__":
+    download()
