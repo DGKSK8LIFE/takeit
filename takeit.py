@@ -27,15 +27,23 @@ takeit = praw.Reddit(
     user_agent="takeit by /u/abcado"
 )
 
+# Print out the full arguments
+for k in range(len(sys.argv)):
+    print(f"Argument {k}: {sys.argv[k]}")
+
 print(f"Created REDDIT instance at {today.strftime('%m/%d, %Y')}")
+
+# Use I for iterations, see below
+i = 0
 
 isNsfwEnabled = False # just default, because...
 # Start doing the submission downloading
-for i in range(arg2):
-    for submission in takeit.subreddit(str(arg1)).hot(limit=int(arg2)):
+while True:
+    for submission in takeit.subreddit(str(arg1)).hot(limit=int(arg2 + 1)):
         if submission.over_18:
             if isNsfwEnabled == True:
                 request.urlretrieve(submission.url, arg3)      
+                i += 1
             else:
                 nsfwCheck = input("Do you want to enable nsfw for this session? (y/N) ")
                 if nsfwCheck == 'y':
@@ -45,6 +53,30 @@ for i in range(arg2):
                     print(f"Not downloading image {i} of {arg2}")
         else:
             # Just normally download the image...
-            request.urlretrieve(submission.url, arg3)
-
-
+            # but we check for if it's a gif or
+            # an image
+            if "i.redd.it" in submission.url:
+                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
+                # Check if it has a gif, and print something:
+                if "gif" in submission.url:
+                    print(f"Downloaded gif. {i} of {arg2}")
+                    i += 1
+                else:
+                    print(f"Downloaded image. {i} of {arg2}")
+                    # Check if it's NOT a gif (e.g. jpg or png or webp) and print something.
+                    i += 1
+            elif "v.redd.it" in submission.url:
+                # Also download it. I just have this in a different clause
+                # because i feel that I should be able to print out different
+                # messages for different things (gifs, videos, images)
+                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
+                print(f"Downloaded video {i} of {arg2}")
+                i += 1
+            else:
+                # Not download it at all, because it may be a gallery or a text post
+                print(f"Not downloading {i}/{arg2}")
+                i += 1
+    if i == arg2 + 1:
+        break
+    else:
+        continue
