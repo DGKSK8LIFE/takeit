@@ -1,10 +1,11 @@
 # Imports
 
 import praw
+import os
+import sys
 from dotenv import dotenv_values
 from datetime import date
 from urllib import request # For downloading.
-import sys
 
 # Variables
 
@@ -55,9 +56,21 @@ def download():
             print(f"Downloaded {i} of {arg2}")
         else:
             nsfwDownload()
+    print("Removing abnormalities.")
+    # Remove any abnormalities.
+    for file in os.listdir(arg3):
+        # Check against:
+        # mp4, png, jpg
+        if "mp4" in file or "png" in file or "jpg" in file:
+            continue
+        else:
+            print(f"Removed {file}, since it had no extension")
+            # delete that file
+            os.remove(f"{arg3}/{file}")
 
 # nsfwDownload downloads nsfw. what did you expect?
 # probably broken.
+# TODO: refactor this later
 def nsfwDownload():
     j = 1 # :)
     for submission in takeit.subreddit(arg1).hot(limit=int(arg2)):
