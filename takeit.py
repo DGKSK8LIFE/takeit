@@ -57,6 +57,7 @@ def download():
             nsfwDownload()
 
 # nsfwDownload downloads nsfw. what did you expect?
+# probably broken.
 def nsfwDownload():
     j = 1 # :)
     for submission in takeit.subreddit(arg1).hot(limit=int(arg2)):
