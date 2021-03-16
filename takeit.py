@@ -53,6 +53,8 @@ def download():
             elif "v.redd" in submission.url: # 18 bytes (still, reddit is not wacky)
                 request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
                 i += 1
+            else:
+                print(f"Will not, and can't (because I don't want to), download submission {i}")
             print(f"Downloaded {i} of {arg2}")
         else:
             nsfwDownload()
