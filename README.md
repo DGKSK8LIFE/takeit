@@ -3,7 +3,7 @@ takeit is a reddit script that downloads an arbitrary number of submissions from
 
 # usage
 ```
-python takeit.py [sub] [amount of submissions] [folder to download them]
+python takeit.py [sub] [amount of submissions] [folder to download them] [--nsfw]
 ```
 
 # why should i use this over any other reddit downloader?

@@ -60,15 +60,19 @@ def download():
                 print(f"Will not, and can't (because I don't want to), download submission {i}")
                 # add 1 to i
                 i += 1
-        else:
-            nsfwDownload()
+        if submission.over_18:
+            print("NSFW DETTECTED")
+            if sys.argv[4] == "--nsfw":
+                nsfwDownload()
+                break
+            return # btfo
     print("Removing abnormalities.")
     # Remove any abnormalities.
     for file in os.listdir(arg3):
         # Check against:
         # mp4, png, jpg, and gif...
         # (tested at 7:40 on 3/15/2021, it removed gifs...)
-        if "mp4" in file or "png" in file or "jpg" in file or "gif" in file: # The ugliest code i have done in
+        if "mp4" in file or "png" in file or "jpg" in file or "jpeg" in file or "gif" in file: # The ugliest code i have done in
             # this entire project
             continue
         else:
@@ -85,8 +89,16 @@ def nsfwDownload():
         if "i.imgur" in submission.url: # why is imgur so wack? why couldn't they do i.img.ur,
             # like reddit does, it just makes no sensee. anyways, 20 bytes.
             request.urlretrieve(submission.url, f"{arg3}/{submission.url[20:]}")
+            j += 1
         else:
-            print(f"{submission.url} with size of {len(submission.url)}")
+            #we also gotta downlaod it (check it)
+            if "i.redd" in submission.url or "v.redd" in submission.url:
+                j += 1
+                print(f"Downloaded submission {j} of {arg2}")
+                request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
+            else:
+                print(f"UNSUPPORTED URL: {submission.url}")
+
 # Main clause
 if __name__ == "__main__":
     download()
