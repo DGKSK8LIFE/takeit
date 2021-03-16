@@ -46,17 +46,20 @@ def download():
             if "i.imgur" in submission.url: # 20 bytes in is where the file is
                 request.urlretrieve(submission.url, f"{arg3}/{submission.url[20:]}")
                 i += 1
+                print(f"Downloaded {i} of {arg2}")
             elif "i.redd" in submission.url: # 18 bytes
                 request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
                 i += 1
+                print(f"Downloaded {i} of {arg2}")
             elif "v.redd" in submission.url: # 18 bytes (still, reddit is not wacky)
                 request.urlretrieve(submission.url, f"{arg3}/{submission.url[18:]}")
                 i += 1
+                # a fix.
+                print(f"Downloaded {i} of {arg2}")
             else:
                 print(f"Will not, and can't (because I don't want to), download submission {i}")
                 # add 1 to i
                 i += 1
-            print(f"Downloaded {i} of {arg2}")
         else:
             nsfwDownload()
     print("Removing abnormalities.")
@@ -72,8 +75,6 @@ def download():
             print(f"Removed {file}, since it had no extension")
             # delete that file
             os.remove(f"{arg3}/{file}")
-    if file > arg3:
-        print("ok whatttttt")
 
 # nsfwDownload downloads nsfw. what did you expect?
 # probably broken.
